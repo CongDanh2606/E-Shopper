@@ -1,0 +1,66 @@
+{% extends 'layout/main.html' %}
+
+{% block content %}
+
+<section id="form"><!--form-->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-1">
+					<div class="login-form"><!--login form-->
+						<h2>Login to your account</h2>
+						<form action="{{ url_for('login.login') }}" method="POST">
+							<input type="email" placeholder="Email Address" name="email_login"/>
+							<br>
+							{% if errors.get('email_login') %}
+							<span class="error">{{ errors['email_login'] }}</span>
+							{% endif %}
+							<input type="password" placeholder="Password" name="password_login"/>
+							<br>
+							{% if errors.get('password_login') %}
+							<span class="error">{{ errors['password_login'] }}</span>
+							{% endif %}
+							<br>
+							<span>
+								<input type="checkbox" class="checkbox"> 
+								Keep me signed in
+							</span>
+							<button type="submit" class="btn btn-default">Login</button>
+						</form>
+					</div><!--/login form-->
+				</div>
+				<div class="col-sm-1">
+					<h2 class="or">OR</h2>
+				</div>
+				<div class="col-sm-4">
+					<div class="signup-form"><!--sign up form-->
+						<h2>New User Signup!</h2>
+						<form action="{{ url_for('register.register') }}" method="POST" enctype="multipart/form-data">
+							<input type="text" placeholder="Name" name="name"/>
+							<br>
+							{% if errors.get('name') %}
+							<span class="error">{{ errors['name'] }}</span>
+							{% endif %}
+							<input type="email" placeholder="Email Address" name="email"/>
+							<br>
+							{% if errors.get('email') %}
+							<span class="error">{{ errors['email'] }}</span>
+							{% endif %}
+							<input type="password" placeholder="Password" name="password"/>
+							<br>
+							{% if errors.get('password') %}
+							<span class="error">{{ errors['password'] }}</span>
+							{% endif %}
+							<input type="file" name="avatar">
+							<br>
+							{% if errors.get('file') %}
+							<span class="error">{{ errors['file'] }}</span>
+							{% endif %}
+							<button type="submit" class="btn btn-default">Signup</button>
+						</form>
+					</div><!--/sign up form-->
+				</div>
+			</div>
+		</div>
+	</section><!--/form-->
+
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'layout/main.html' %}
+
+{% block content %}
+
+<section id="advertisement">
+    <div class="container">
+        <h2>Products</h2>
+    </div>
+</section>
+
+
+<section>
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-sm-12">
+
+                <div class="features_items">
+
+                    <h2 class="title text-center">
+                        All Products
+                    </h2>
+
+
+                    <div class="row">
+
+                        {% if products %}
+
+                            {% for product in products %}
+
+                                <div class="col-sm-4">
+
+                                    <div class="product-image-wrapper">
+
+                                        <div class="single-products">
+
+                                            <div class="productinfo text-center">
+
+                                                <img
+                                                    src="{{ url_for('static', filename=product['image']) }}"
+                                                    alt="{{ product['title'] }}"
+                                                >
+
+                                                <h2>
+                                                    ${{ product['price'] }}
+                                                </h2>
+
+                                                <p>
+                                                    {{ product['title'] }}
+                                                </p>
+
+                                                <button
+                                                    class="btn btn-default add-btn"
+                                                    id="{{ product['id'] }}"
+                                                >
+                                                    <i class="fa fa-shopping-cart"></i>
+                                                    Add to cart
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <div class="col-sm-12">
+                                <p class="text-center">
+                                    Không có sản phẩm.
+                                </p>
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $('.add-btn').click(function () {
+
+            
+            const product_id = $(this).attr('id');
+
+            console.log("Product ID:", product_id);
+
+
+            $.ajax({
+
+                url: '/cart',
+
+                method: 'POST',
+
+                contentType: 'application/json',
+
+                data: JSON.stringify({
+                    product_id: product_id
+                }),
+
+                success: function (response) {
+
+                    console.log(response);
+
+                    alert('Đã thêm sản phẩm vào giỏ hàng');
+
+                },
+
+                error: function (error) {
+
+                    console.log(error);
+
+                    alert('Thêm sản phẩm thất bại');
+
+                }
+
+            });
+
+        });
+
+    });
+
+</script>
+
+{% endblock %}

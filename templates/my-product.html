@@ -1,0 +1,83 @@
+{% extends 'layout/main.html' %}
+
+{% block content %}
+
+<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="left-sidebar">
+						<h2>Account</h2>
+						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+							
+							
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="{{ url_for('account.update') }}">Account</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="{{ url_for('my-product.my_product') }}">My product</a></h4>
+								</div>
+							</div>
+							
+						</div><!--/category-products-->
+					
+						
+					</div>
+				</div>
+				<div class="col-sm-9">
+					<div class="table-responsive cart_info">
+						<table class="table table-condensed">
+							<thead>
+								<tr class="cart_menu">
+									<td class="image">image</td>
+									<td class="description">name</td>
+									<td class="price">price</td>
+									
+									<td class="total">action</td>
+									
+								</tr>
+							</thead>
+							<tbody>
+
+								{% if products %}
+
+									{% for product in products %}
+
+										<tr>
+											<td class="cart_product">
+												<a href=""><img src="{{ url_for('static', filename=product['image']) }}"
+												width="100"
+												alt=""></a>
+											</td>
+
+											<td class="cart_description">
+												<h4><a href="">{{ product['title'] }}</a></h4>
+											</td>
+											<td class="cart_price">
+												<p>${{ product['price'] }}</p>
+											</td>
+											
+											<td class="cart_total">
+												<a href="{{ url_for('edit_product.edit', id=product['id']) }}">Edit</a>
+
+												<a href="{{ url_for('delete_product.delete', id=product['id'])}}" onclick="return confirm('Bạn chắc chắn muốn xóa mặt hàng này chưa?')">Delete</a>
+											</td>
+											
+										</tr>
+
+									{% endfor %}
+								
+								{% endif %}
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+{% endblock %}
