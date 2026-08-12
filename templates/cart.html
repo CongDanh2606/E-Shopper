@@ -71,7 +71,7 @@
                     <td class="cart_price">
 
                         <p>
-                            ${{ "%.2f"|format(product.price) }}
+                            ${{ product.price }}
                         </p>
 
                     </td>
@@ -83,7 +83,7 @@
 
                             <a
                                 class="cart_quantity_up"
-                                href="{{ url_for('cart.increase_cart', product_id=product.id) }}"
+                                href="#"
                             >
                                 +
                             </a>
@@ -100,7 +100,7 @@
 
                             <a
                                 class="cart_quantity_down"
-                                href="{{ url_for('cart.decrease_cart', product_id=product.id) }}"
+                                href="#"
                             >
                                 -
                             </a>
@@ -114,7 +114,7 @@
 
                         <p class="cart_total_price">
 
-                            ${{ "%.2f"|format(product.price * product.qty) }}
+                            ${{ (product.price * product.qty) }}
 
                         </p>
 
@@ -125,7 +125,7 @@
 
                         <a
                             class="cart_quantity_delete"
-                            href="{{ url_for('cart.delete_cart', product_id=product.id) }}"
+                            href="#"
                         >
                             <i class="fa fa-times"></i>
                         </a>
