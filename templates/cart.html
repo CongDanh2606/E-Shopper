@@ -310,7 +310,7 @@
                         Cart Sub Total
 
                         <span>
-                            ${{ "%.2f"|format(subtotal.value) }}
+                            ${{ subtotal.value }}
                         </span>
                     </li>
 
@@ -337,7 +337,7 @@
                         Total
 
                         <span>
-                            ${{ "%.2f"|format(subtotal.value + 2) }}
+                            ${{ (subtotal.value + 2) }}
                         </span>
                     </li>
 
@@ -371,5 +371,7 @@
 </section>
 
 {% endif %}
+
+
 
 {% endblock %}

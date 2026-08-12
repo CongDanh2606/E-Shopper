@@ -56,63 +56,6 @@ def add_to_cart():
         'product': session['cart']
     })
 
-@cart_py.route('/cart/increase/<int:product_id>')
-def increase_cart(product_id):
-
-    cart = session.get('cart', [])
-
-    for item in cart:
-
-        if item['id'] == product_id:
-
-            item['qty'] += 1
-
-            break
-
-    session['cart'] = cart
-
-    return redirect(url_for('cart.show_cart'))
-
-
-@cart_py.route('/cart/decrease/<int:product_id>')
-def decrease_cart(product_id):
-
-    cart = session.get('cart', [])
-
-    for item in cart:
-
-        if item['id'] == product_id:
-
-            item['qty'] -= 1
-
-            
-            if item['qty'] <= 0:
-                cart.remove(item)
-
-            break
-
-    session['cart'] = cart
-
-    return redirect(url_for('cart.show_cart'))
-
-
-@cart_py.route('/cart/delete/<int:product_id>')
-def delete_cart(product_id):
-
-    cart = session.get('cart', [])
-
-    for item in cart:
-
-        if item['id'] == product_id:
-
-            cart.remove(item)
-
-            break
-
-    session['cart'] = cart
-
-    return redirect(url_for('cart.show_cart'))
-
 @cart_py.route('/show-cart')
 def show_cart():
 
