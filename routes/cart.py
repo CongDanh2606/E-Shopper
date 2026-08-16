@@ -56,6 +56,84 @@ def add_to_cart():
         'product': session['cart']
     })
 
+@cart_py.route('/cart-up', methods=['POST'])
+def cart_up():
+
+    product_id = request.json.get('product_id')
+
+    cart = session.get('cart', [])
+
+    for item in cart:
+
+        if item['id'] == int(product_id):
+
+            item['qty'] += 1
+
+            session['cart'] = cart
+
+            return jsonify({
+                'status': 'success',
+                'qty': item['qty']
+            })
+
+    return jsonify({
+        'status': 'fail',
+        'message': 'Product not found'
+    }), 404
+
+@cart_py.route('/cart-down', methods=['POST'])
+def cart_down():
+
+    product_id = request.json.get('product_id')
+
+    cart = session.get('cart', [])
+
+    for item in cart:
+
+        if item['id'] == int(product_id):
+
+            if item['qty'] <= 1:
+
+                return jsonify({
+                    'status': 'fail',
+                    'message': 'Không thể giảm sản phẩm cuối cùng'
+                })
+
+            item['qty'] -= 1
+
+            session['cart'] = cart
+
+            return jsonify({
+                'status': 'success',
+                'qty': item['qty']
+            })
+
+    return jsonify({
+        'status': 'fail',
+        'message': 'Product not found'
+    }), 404
+
+@cart_py.route('/cart-delete', methods=['POST'])
+def cart_delete():
+
+    product_id = request.json.get('product_id')
+
+    cart = session.get('cart', [])
+
+    new_cart = []
+
+    for item in cart:
+
+        if item['id'] != int(product_id):
+
+            new_cart.append(item)
+
+    session['cart'] = new_cart
+
+    return jsonify({
+        'status': 'success'
+    })
+
 @cart_py.route('/show-cart')
 def show_cart():
 

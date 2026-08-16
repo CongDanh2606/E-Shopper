@@ -5,373 +5,464 @@
 <section id="cart_items">
     <div class="container">
 
-```
-    <!-- Breadcrumb -->
-    <div class="breadcrumbs">
-        <ol class="breadcrumb">
-            <li>
-                <a href="/">Home</a>
-            </li>
-            <li class="active">Shopping Cart</li>
-        </ol>
-    </div>
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li class="active">Shopping Cart</li>
+            </ol>
+        </div>
 
-    {% if products %}
+        {% if products %}
 
-    <!-- Cart table -->
-    <div class="table-responsive cart_info">
-        <table class="table table-condensed">
+        <div class="table-responsive cart_info">
 
-            <thead>
-                <tr class="cart_menu">
-                    <td class="image">Item</td>
-                    <td class="description">Description</td>
-                    <td class="price">Price</td>
-                    <td class="quantity">Quantity</td>
-                    <td class="total">Total</td>
-                    <td></td>
-                </tr>
-            </thead>
+            <table class="table table-condensed">
 
-            <tbody>
+                <thead>
+                    <tr class="cart_menu">
+                        <td class="image">Item</td>
+                        <td class="description"></td>
+                        <td class="price">Price</td>
+                        <td class="quantity">Quantity</td>
+                        <td class="total">Total</td>
+                        <td></td>
+                    </tr>
+                </thead>
 
-                {% for product in products %}
+                <tbody>
 
-                <tr>
+                    {% for product in products %}
 
-                    <!-- Product image -->
-                    <td class="cart_product">
+                    <tr data-id="{{ product.id }}">
 
-                        <a href="#">
-                            <img
-                                src="{{ url_for('static', filename=product.image) }}"
-                                alt="{{ product.title }}"
-                                width="100"
-                            >
-                        </a>
-
-                    </td>
-
-                    <!-- Product information -->
-                    <td class="cart_description">
-
-                        <h4>
+                        <td class="cart_product">
                             <a href="#">
-                                {{ product.title }}
+                                <img
+                                    src="{{ url_for('static', filename=product.image) }}"
+                                    alt="{{ product.title }}"
+                                    width="100"
+                                >
                             </a>
-                        </h4>
+                        </td>
 
-                        <p>
-                            Product ID: {{ product.id }}
-                        </p>
+                        <td class="cart_description">
+                            <h4>
+                                <a href="#">
+                                    {{ product.title }}
+                                </a>
+                            </h4>
 
-                    </td>
+                            <p>
+                                Web ID: {{ product.id }}
+                            </p>
+                        </td>
 
-                    <!-- Price -->
-                    <td class="cart_price">
+                        <td class="cart_price">
+                            <p>
+                                ${{ product.price }}
+                            </p>
+                        </td>
 
-                        <p>
-                            ${{ product.price }}
-                        </p>
+                        <td class="cart_quantity">
 
-                    </td>
+                            <div class="cart_quantity_button">
 
-                    <!-- Quantity -->
-                    <td class="cart_quantity">
+                                <a
+                                    class="cart_quantity_up cart-up"
+                                    href="#"
+                                >
+                                    +
+                                </a>
 
-                        <div class="cart_quantity_button">
+                                <input
+                                    class="cart_quantity_input"
+                                    type="text"
+                                    name="quantity"
+                                    value="{{ product.qty }}"
+                                    autocomplete="off"
+                                    size="2"
+                                    readonly
+                                >
+
+                                <a
+                                    class="cart_quantity_down cart-down"
+                                    href="#"
+                                >
+                                    -
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                        <td class="cart_total">
+
+                            <p class="cart_total_price">
+                                ${{ product.price * product.qty }}
+                            </p>
+
+                        </td>
+
+                        <td class="cart_delete">
 
                             <a
-                                class="cart_quantity_up"
+                                class="cart_quantity_delete cart-delete"
                                 href="#"
                             >
-                                +
+                                <i class="fa fa-times"></i>
                             </a>
 
-                            <input
-                                class="cart_quantity_input"
-                                type="text"
-                                name="quantity"
-                                value="{{ product.qty }}"
-                                autocomplete="off"
-                                size="2"
-                                readonly
-                            >
+                        </td>
 
-                            <a
-                                class="cart_quantity_down"
-                                href="#"
-                            >
-                                -
-                            </a>
+                    </tr>
 
-                        </div>
+                    {% endfor %}
 
-                    </td>
+                </tbody>
 
-                    <!-- Total -->
-                    <td class="cart_total">
+            </table>
 
-                        <p class="cart_total_price">
+        </div>
 
-                            ${{ (product.price * product.qty) }}
+        {% else %}
 
-                        </p>
+        <div class="text-center">
 
-                    </td>
+            <h2>Your Shopping Cart is Empty</h2>
 
-                    <!-- Delete -->
-                    <td class="cart_delete">
+            <p>You don't have any products in your cart yet.</p>
 
-                        <a
-                            class="cart_quantity_delete"
-                            href="#"
-                        >
-                            <i class="fa fa-times"></i>
-                        </a>
+            <a
+                href="/"
+                class="btn btn-default check_out"
+            >
+                Continue Shopping
+            </a>
 
-                    </td>
+        </div>
 
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-    </div>
-
-    {% else %}
-
-    <!-- Empty cart -->
-    <div class="text-center" style="padding: 50px 0;">
-
-        <h2>Your Shopping Cart is Empty</h2>
-
-        <p>
-            You don't have any products in your cart yet.
-        </p>
-
-        <a
-            href="/"
-            class="btn btn-default check_out"
-        >
-            Continue Shopping
-        </a>
+        {% endif %}
 
     </div>
-
-    {% endif %}
-
-</div>
-```
-
 </section>
+
 
 {% if products %}
 
 <section id="do_action">
 
-```
-<div class="container">
+    <div class="container">
 
-    <div class="heading">
+        <div class="heading">
 
-        <h3>What would you like to do next?</h3>
+            <h3>What would you like to do next?</h3>
 
-        <p>
-            Choose if you have a discount code or reward points
-            you want to use or would like to estimate your delivery cost.
-        </p>
-
-    </div>
-
-    <div class="row">
-
-        <!-- Shipping information -->
-        <div class="col-sm-6">
-
-            <div class="chose_area">
-
-                <ul class="user_option">
-
-                    <li>
-                        <input type="checkbox" id="coupon">
-                        <label for="coupon">
-                            Use Coupon Code
-                        </label>
-                    </li>
-
-                    <li>
-                        <input type="checkbox" id="voucher">
-                        <label for="voucher">
-                            Use Gift Voucher
-                        </label>
-                    </li>
-
-                    <li>
-                        <input type="checkbox" id="shipping">
-                        <label for="shipping">
-                            Estimate Shipping & Taxes
-                        </label>
-                    </li>
-
-                </ul>
-
-
-                <ul class="user_info">
-
-                    <li class="single_field">
-
-                        <label>Country:</label>
-
-                        <select>
-                            <option>Vietnam</option>
-                            <option>United States</option>
-                            <option>UK</option>
-                            <option>India</option>
-                            <option>Canada</option>
-                        </select>
-
-                    </li>
-
-
-                    <li class="single_field">
-
-                        <label>Region / State:</label>
-
-                        <select>
-
-                            <option>Select</option>
-                            <option>Da Nang</option>
-                            <option>Ha Noi</option>
-                            <option>Ho Chi Minh</option>
-                            <option>Hai Phong</option>
-                            <option>Can Tho</option>
-
-                        </select>
-
-                    </li>
-
-
-                    <li class="single_field zip-field">
-
-                        <label>Zip Code:</label>
-
-                        <input
-                            type="text"
-                            placeholder="Enter ZIP code"
-                        >
-
-                    </li>
-
-                </ul>
-
-
-                <a
-                    class="btn btn-default update"
-                    href="#"
-                >
-                    Get Quotes
-                </a>
-
-
-                <a
-                    class="btn btn-default check_out"
-                    href="/"
-                >
-                    Continue Shopping
-                </a>
-
-            </div>
+            <p>
+                Choose if you have a discount code or reward points
+                you want to use or would like to estimate your delivery cost.
+            </p>
 
         </div>
 
+        <div class="row">
 
-        <!-- Cart total -->
-        <div class="col-sm-6">
+            <div class="col-sm-6">
 
-            <div class="total_area">
+                <div class="chose_area">
 
-                {% set subtotal = namespace(value=0) %}
+                    <ul class="user_option">
 
-                {% for product in products %}
+                        <li>
+                            <input type="checkbox">
+                            <label>Use Coupon Code</label>
+                        </li>
 
-                    {% set subtotal.value =
-                        subtotal.value + (product.price * product.qty)
-                    %}
+                        <li>
+                            <input type="checkbox">
+                            <label>Use Gift Voucher</label>
+                        </li>
 
-                {% endfor %}
+                        <li>
+                            <input type="checkbox">
+                            <label>Estimate Shipping & Taxes</label>
+                        </li>
+
+                    </ul>
+
+                    <ul class="user_info">
+
+                        <li class="single_field">
+
+                            <label>Country:</label>
+
+                            <select>
+                                <option>Vietnam</option>
+                                <option>United States</option>
+                                <option>UK</option>
+                                <option>India</option>
+                                <option>Canada</option>
+                            </select>
+
+                        </li>
+
+                        <li class="single_field">
+
+                            <label>Region / State:</label>
+
+                            <select>
+                                <option>Select</option>
+                                <option>Da Nang</option>
+                                <option>Ha Noi</option>
+                                <option>Ho Chi Minh</option>
+                                <option>Hai Phong</option>
+                                <option>Can Tho</option>
+                            </select>
+
+                        </li>
+
+                        <li class="single_field zip-field">
+
+                            <label>Zip Code:</label>
+
+                            <input type="text">
+
+                        </li>
+
+                    </ul>
+
+                    <a
+                        class="btn btn-default update"
+                        href="#"
+                    >
+                        Get Quotes
+                    </a>
+
+                    <a
+                        class="btn btn-default check_out"
+                        href="/"
+                    >
+                        Continue
+                    </a>
+
+                </div>
+
+            </div>
 
 
-                <ul>
+            <div class="col-sm-6">
 
-                    <li>
-                        Cart Sub Total
+                <div class="total_area">
 
-                        <span>
-                            ${{ subtotal.value }}
-                        </span>
-                    </li>
+                    {% set subtotal = namespace(value=0) %}
 
+                    {% for product in products %}
 
-                    <li>
-                        Eco Tax
+                        {% set subtotal.value =
+                            subtotal.value + (product.price * product.qty)
+                        %}
 
-                        <span>
-                            $2.00
-                        </span>
-                    </li>
+                    {% endfor %}
 
+                    <ul>
 
-                    <li>
-                        Shipping Cost
+                        <li>
+                            Cart Sub Total
 
-                        <span>
-                            Free
-                        </span>
-                    </li>
+                            <span id="cart-subtotal">
+                                ${{ subtotal.value }}
+                            </span>
+                        </li>
 
+                        <li>
+                            Eco Tax
+                            <span>$2</span>
+                        </li>
 
-                    <li>
-                        Total
+                        <li>
+                            Shipping Cost
+                            <span>Free</span>
+                        </li>
 
-                        <span>
-                            ${{ (subtotal.value + 2) }}
-                        </span>
-                    </li>
+                        <li>
+                            Total
 
-                </ul>
+                            <span id="cart-total">
+                                ${{ subtotal.value + 2 }}
+                            </span>
+                        </li>
 
+                    </ul>
 
-                <a
-                    class="btn btn-default update"
-                    href="#"
-                >
-                    Update
-                </a>
+                    <a
+                        class="btn btn-default update"
+                        href="#"
+                    >
+                        Update
+                    </a>
 
+                    <a
+                        class="btn btn-default check_out"
+                        href="#"
+                    >
+                        Check Out
+                    </a>
 
-                <a
-                    class="btn btn-default check_out"
-                    href="#"
-                >
-                    Check Out
-                </a>
+                </div>
 
             </div>
 
         </div>
 
     </div>
-
-</div>
-```
 
 </section>
 
 {% endif %}
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script>
+
+$(document).ready(function () {
+
+    $('.cart_quantity_up').click(function (e) {
+
+        e.preventDefault();
+
+        const product_id = $(this)
+            .closest('tr')
+            .attr('data-id');
+
+        $.ajax({
+
+            url: '/cart-up',
+
+            method: 'POST',
+
+            contentType: 'application/json',
+
+            data: JSON.stringify({
+                product_id: product_id
+            }),
+
+            success: function (response) {
+
+                console.log(response);
+
+                if (response.status === 'success') {
+
+                    location.reload();
+
+                }
+
+            },
+
+            error: function (error) {
+
+                console.log(error);
+
+                alert('Tăng số lượng thất bại');
+
+            }
+
+        });
+
+    });
+
+    $('.cart_quantity_down').click(function (e) {
+
+        e.preventDefault();
+
+        const product_id = $(this)
+            .closest('tr')
+            .attr('data-id');
+
+        $.ajax({
+
+            url: '/cart-down',
+
+            method: 'POST',
+
+            contentType: 'application/json',
+
+            data: JSON.stringify({
+                product_id: product_id
+            }),
+
+            success: function (response) {
+
+                console.log(response);
+
+                if (response.status === 'success') {
+
+                    location.reload();
+
+                } else {
+
+                    alert(response.message);
+
+                }
+
+            },
+
+            error: function (error) {
+
+                console.log(error);
+
+                alert('Giảm số lượng thất bại');
+
+            }
+
+        });
+
+    });
+
+    $('.cart_quantity_delete').click(function (e) {
+
+        e.preventDefault();
+
+        const product_id = $(this)
+            .closest('tr')
+            .attr('data-id');
+
+        $.ajax({
+
+            url: '/cart-delete',
+
+            method: 'POST',
+
+            contentType: 'application/json',
+
+            data: JSON.stringify({
+                product_id: product_id
+            }),
+
+            success: function (response) {
+
+                console.log(response);
+
+                if (response.status === 'success') {
+
+                    location.reload();
+
+                }
+
+            },
+
+            error: function (error) {
+
+                console.log(error);
+
+                alert('Xóa sản phẩm thất bại');
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>
 
 {% endblock %}
