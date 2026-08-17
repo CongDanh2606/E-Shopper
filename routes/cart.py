@@ -56,82 +56,109 @@ def add_to_cart():
         'product': session['cart']
     })
 
-@cart_py.route('/cart-up', methods=['POST'])
-def cart_up():
+@cart_py.route('/cart-action', methods=['POST']) 
+def cart_action():
 
-    product_id = request.json.get('product_id')
+    data = request.get_json()
+
+    product_id = str(data.get('product_id'))
+
+    action = int(data.get('action'))
 
     cart = session.get('cart', [])
 
+    product = None
+
     for item in cart:
 
-        if item['id'] == int(product_id):
+        if str(item['id']) == product_id:
 
-            item['qty'] += 1
+            product = item
 
-            session['cart'] = cart
+            break
+
+    if product is None:
+
+        return jsonify({
+
+            'status': 'fail', 
+
+            'message': 'Sản phẩm không có trong giỏ hàng'
+            
+        })
+
+    if action == 1:
+
+        product['qty'] += 1
+
+    elif action == 2:
+
+        if product['qty'] >= 2:
+
+            product['qty'] -= 1
+
+        else:
 
             return jsonify({
-                'status': 'success',
-                'qty': item['qty']
+                'status': 'fail',
+                'message': 'Không thể xóa sản phẩm số lượng nhỏ hơn 1'
             })
 
-    return jsonify({
-        'status': 'fail',
-        'message': 'Product not found'
-    }), 404
+    elif action == 3:
 
-@cart_py.route('/cart-down', methods=['POST'])
-def cart_down():
+        cart.remove(product)
 
-    product_id = request.json.get('product_id')
+        session['cart'] = cart
+        session.modified = True
 
-    cart = session.get('cart', [])
+        return jsonify({
+            'status': 'success',
+            'action': 3
+        })
+
+    else:
+
+        return jsonify({
+            'status': 'fail',
+            'message': 'Yêu cầu không hợp lệ!'
+        })
+
+    session['cart'] = cart
+
+    session.modified = True
+
+    price = float(product['price'])
+
+    qty = product['qty']
+
+    total = price * qty
+
+    sub_total = 0 
 
     for item in cart:
 
-        if item['id'] == int(product_id):
+        item_price = float(item['price'])
 
-            if item['qty'] <= 1:
+        item_qty = item['qty']
 
-                return jsonify({
-                    'status': 'fail',
-                    'message': 'Không thể giảm sản phẩm cuối cùng'
-                })
+        sub_total += item_price * item_qty
 
-            item['qty'] -= 1
-
-            session['cart'] = cart
-
-            return jsonify({
-                'status': 'success',
-                'qty': item['qty']
-            })
+    cart_total = sub_total + 2
 
     return jsonify({
-        'status': 'fail',
-        'message': 'Product not found'
-    }), 404
 
-@cart_py.route('/cart-delete', methods=['POST'])
-def cart_delete():
+        'status': 'success',
 
-    product_id = request.json.get('product_id')
+        'product_id': product_id,
 
-    cart = session.get('cart', [])
+        'qty': qty,
 
-    new_cart = []
+        'total': total,
 
-    for item in cart:
+        'sub_total': sub_total,
 
-        if item['id'] != int(product_id):
+        'cart_total': cart_total
 
-            new_cart.append(item)
-
-    session['cart'] = new_cart
-
-    return jsonify({
-        'status': 'success'
     })
 
 @cart_py.route('/show-cart')

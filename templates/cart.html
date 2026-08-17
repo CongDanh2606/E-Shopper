@@ -69,6 +69,7 @@
 
                                 <a
                                     class="cart_quantity_up cart-up"
+                                    data-action="1"
                                     href="#"
                                 >
                                     +
@@ -86,6 +87,7 @@
 
                                 <a
                                     class="cart_quantity_down cart-down"
+                                    data-action="2"
                                     href="#"
                                 >
                                     -
@@ -107,6 +109,7 @@
 
                             <a
                                 class="cart_quantity_delete cart-delete"
+                                data-action="3"
                                 href="#"
                             >
                                 <i class="fa fa-times"></i>
@@ -325,24 +328,32 @@
 
 $(document).ready(function () {
 
-    $('.cart_quantity_up').click(function (e) {
+    $('.cart-up, .cart-down, .cart-delete').click(function (event) {
 
-        e.preventDefault();
+        event.preventDefault();
 
-        const product_id = $(this)
-            .closest('tr')
-            .attr('data-id');
+        const click = $(this);
+
+        const row = click.closest('tr');
+
+        const product_id = row.attr('data-id')
+
+        const action = $(this).data('action');
 
         $.ajax({
 
-            url: '/cart-up',
+            url: '/cart-action',
 
             method: 'POST',
 
             contentType: 'application/json',
 
             data: JSON.stringify({
-                product_id: product_id
+
+                product_id: product_id,
+
+                action: action
+
             }),
 
             success: function (response) {
@@ -351,53 +362,35 @@ $(document).ready(function () {
 
                 if (response.status === 'success') {
 
-                    location.reload();
+                    if (action == 1) {
+
+                        row.find('.cart_quantity_input').val(response.qty);
+
+                        row.find('.cart_total_price').text('$' + response.total);
+
+                    }
+
+                    else if (action == 2) {
+
+                        row.find('.cart_quantity_input').val(response.qty);
+
+                        row.find('.cart_total_price').text('$' + response.total);
+
+                    }
+
+                    else if (action == 3) {
+
+                        row.remove()
+
+                    }
+
+                    $('#cart-subtotal').text('$' + response.sub_total);
+
+                    $('#cart-total').text('$' + response.cart_total);
 
                 }
-
-            },
-
-            error: function (error) {
-
-                console.log(error);
-
-                alert('Tăng số lượng thất bại');
-
-            }
-
-        });
-
-    });
-
-    $('.cart_quantity_down').click(function (e) {
-
-        e.preventDefault();
-
-        const product_id = $(this)
-            .closest('tr')
-            .attr('data-id');
-
-        $.ajax({
-
-            url: '/cart-down',
-
-            method: 'POST',
-
-            contentType: 'application/json',
-
-            data: JSON.stringify({
-                product_id: product_id
-            }),
-
-            success: function (response) {
-
-                console.log(response);
-
-                if (response.status === 'success') {
-
-                    location.reload();
-
-                } else {
+                
+                else {
 
                     alert(response.message);
 
@@ -409,52 +402,8 @@ $(document).ready(function () {
 
                 console.log(error);
 
-                alert('Giảm số lượng thất bại');
-
-            }
-
-        });
-
-    });
-
-    $('.cart_quantity_delete').click(function (e) {
-
-        e.preventDefault();
-
-        const product_id = $(this)
-            .closest('tr')
-            .attr('data-id');
-
-        $.ajax({
-
-            url: '/cart-delete',
-
-            method: 'POST',
-
-            contentType: 'application/json',
-
-            data: JSON.stringify({
-                product_id: product_id
-            }),
-
-            success: function (response) {
-
-                console.log(response);
-
-                if (response.status === 'success') {
-
-                    location.reload();
-
-                }
-
-            },
-
-            error: function (error) {
-
-                console.log(error);
-
-                alert('Xóa sản phẩm thất bại');
-
+                alert('Có lỗi xảy ra với giỏ hàng!');
+                
             }
 
         });
