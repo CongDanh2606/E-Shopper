@@ -359,6 +359,7 @@ $(document).ready(function () {
             success: function (response) {
 
                 console.log(response);
+                
 
                 if (response.status === 'success') {
 
@@ -368,6 +369,9 @@ $(document).ready(function () {
 
                         row.find('.cart_total_price').text('$' + response.total);
 
+                        $('#cart-count').text(response.cart_count);
+
+
                     }
 
                     else if (action == 2) {
@@ -375,6 +379,9 @@ $(document).ready(function () {
                         row.find('.cart_quantity_input').val(response.qty);
 
                         row.find('.cart_total_price').text('$' + response.total);
+
+                        $('#cart-count').text(response.cart_count);
+
 
                     }
 
@@ -387,6 +394,9 @@ $(document).ready(function () {
                     $('#cart-subtotal').text('$' + response.sub_total);
 
                     $('#cart-total').text('$' + response.cart_total);
+
+                    $('#cart-count').text(response.cart_count);
+
 
                 }
                 

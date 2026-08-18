@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from datetime import timedelta
 from routes.login import login_bp
 from routes.register import register_bp
@@ -30,6 +30,16 @@ app.register_blueprint(delete_product_bp)
 app.register_blueprint(index_bp)
 app.register_blueprint(cart_py)
 
+@app.context_processor
+def inject_cart_count():
+
+    cart = session.get('cart', [])
+
+    cart_count = sum(item['qty'] for item in cart)
+
+    return {
+        'cart_count': cart_count
+    }
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)    

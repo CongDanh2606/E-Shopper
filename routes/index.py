@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 from db import get_connection
 
 index_bp = Blueprint('index', __name__)
@@ -17,10 +17,15 @@ def index():
 
     products = cur.fetchall()
 
+    cart = session.get('cart', [])
+
+    cart_count = sum(item['qty'] for item in cart)
+
     cur.close()
     conn.close()
 
     return render_template(
         'index.html',
-        products=products
+        products=products,
+        cart_count=cart_count
     )
